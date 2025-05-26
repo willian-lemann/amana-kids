@@ -1,4 +1,5 @@
 import type { Config } from "@react-router/dev/config";
+import { RemixVitePWA } from "@vite-pwa/remix";
 
 export default {
   // Config options...

@@ -7,6 +7,9 @@ import {
   ScrollRestoration,
 } from "react-router";
 
+import PWABadge from "~/components/PWABadge";
+import { PWAAssets } from "~/components/PWAAssets";
+
 import type { Route } from "./+types/root";
 import "./app.css";
 
@@ -30,12 +33,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
+        <PWAAssets />
         <Links />
       </head>
       <body>
         {children}
         <ScrollRestoration />
         <Scripts />
+        <PWABadge />
       </body>
     </html>
   );
