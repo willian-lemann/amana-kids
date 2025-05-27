@@ -21,7 +21,7 @@ export default defineConfig({
 
       manifest: {
         name: "Amana Kids",
-        short_name: "amana-kids",
+        short_name: "Amana Kids",
         description:
           "Amana kids é o app para o gerenciamento e organização das informações das crianças da igreja amana.",
         theme_color: "#000000",

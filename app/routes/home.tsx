@@ -7,8 +7,8 @@ import { Button } from "~/components/ui/button";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Amana kids" },
+    { name: "description", content: "Bem vindo ao ministerio do amana kids!" },
   ];
 }
 
