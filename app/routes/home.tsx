@@ -4,6 +4,9 @@ import { BookOpen, Calendar, Heart, HomeIcon, Star, Users } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import type { Route } from "./+types/home";
+import { Can } from "~/components/can";
+import { getCurrentUser } from "~/api/account/get-current-user";
+import { Link } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -12,7 +15,14 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Home() {
+export async function loader({ request }: Route.LoaderArgs) {
+  return {
+    currentUser: await getCurrentUser(request),
+  };
+}
+
+export default function Home({ loaderData }: Route.ComponentProps) {
+  const { currentUser } = loaderData;
   function getNextSundayAt19() {
     const now = new Date();
     const dayOfWeek = now.getDay();
@@ -198,14 +208,18 @@ export default function Home() {
             <span className="text-xs">Início</span>
           </Button>
 
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex-col gap-1 h-auto py-2 text-gray-500"
-          >
-            <Calendar className="w-5 h-5" />
-            <span className="text-xs">Chamada</span>
-          </Button>
+          <Can isAdmin={Boolean(currentUser?.is_admin)}>
+            <Link to="/admin">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex-col gap-1 h-auto py-2 text-gray-500"
+              >
+                <Calendar className="w-5 h-5" />
+                <span className="text-xs">Admin</span>
+              </Button>
+            </Link>
+          </Can>
 
           {/* <Button
             variant="ghost"
@@ -225,13 +239,24 @@ export default function Home() {
             <span className="text-xs">Lições</span>
           </Button> */}
 
+          <Can isAdmin={Boolean(currentUser?.is_admin)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="flex-col gap-1 h-auto py-2 text-gray-500"
+            >
+              <Users className="w-5 h-5" />
+              <span className="text-xs">Crianças</span>
+            </Button>
+          </Can>
+
           <Button
             variant="ghost"
             size="sm"
             className="flex-col gap-1 h-auto py-2 text-gray-500"
           >
             <Users className="w-5 h-5" />
-            <span className="text-xs">Turma</span>
+            <span className="text-xs">Cultos</span>
           </Button>
         </div>
       </div>

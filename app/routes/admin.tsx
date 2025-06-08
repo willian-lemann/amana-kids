@@ -34,6 +34,8 @@ import {
   Bell,
 } from "lucide-react";
 import type { Route } from "./+types/admin";
+import { getCurrentUser } from "~/api/account/get-current-user";
+import { redirect } from "react-router";
 
 // Interfaces
 interface Aviso {
@@ -75,6 +77,13 @@ interface Presenca {
   crianca_id: number;
   data: string;
   presente: boolean;
+}
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const user = await getCurrentUser(request);
+  if (!Boolean(user?.is_admin)) {
+    return redirect("/");
+  }
 }
 
 export default function PainelAdministrativo({}: Route.ComponentProps) {
