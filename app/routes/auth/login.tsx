@@ -6,11 +6,13 @@ import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
+import { toast } from "sonner";
 
 export default function SignIn() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const signIn = async () => {
     await authClient.signIn.email(
@@ -20,13 +22,14 @@ export default function SignIn() {
       },
       {
         onRequest: (ctx) => {
-          // show loading state
+          setIsLoading(true);
         },
         onSuccess: (ctx) => {
+          setIsLoading(false);
           navigate("/");
         },
         onError: (ctx) => {
-          alert(JSON.stringify(ctx.error));
+          toast(JSON.stringify(ctx.error));
         },
       }
     );
@@ -72,7 +75,7 @@ export default function SignIn() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <Button type="submit" className="w-full">
+            <Button loading={isLoading} type="submit" className="w-full">
               Login
             </Button>
           </div>

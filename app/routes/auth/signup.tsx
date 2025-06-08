@@ -12,7 +12,6 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [creci, setCreci] = useState("");
 
   const navigate = useNavigate();
 
@@ -31,6 +30,7 @@ export default function SignUp() {
           setIsLoading(true);
         },
         onSuccess: (ctx) => {
+          setIsLoading(false);
           navigate("/");
         },
         onError: (ctx) => {

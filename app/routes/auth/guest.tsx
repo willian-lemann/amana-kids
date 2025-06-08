@@ -1,5 +1,5 @@
 import { Outlet, redirect } from "react-router";
-import { auth } from "~/lib/auth";
+
 import type { Route } from "./+types/guest";
 import { getCurrentUser } from "~/api/account/get-current-user";
 
@@ -21,7 +21,7 @@ export default function GuestLayout() {
       </div>
       <div className="relative hidden bg-muted lg:block">
         <img
-          src="/background-house.png"
+          src="/kids-background.jpeg"
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />

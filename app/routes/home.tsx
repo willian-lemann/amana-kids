@@ -6,7 +6,8 @@ import { Button } from "~/components/ui/button";
 import type { Route } from "./+types/home";
 import { Can } from "~/components/can";
 import { getCurrentUser } from "~/api/account/get-current-user";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { logout } from "~/api/account/logout";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -23,6 +24,9 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Home({ loaderData }: Route.ComponentProps) {
   const { currentUser } = loaderData;
+
+  const navigate = useNavigate();
+
   function getNextSundayAt19() {
     const now = new Date();
     const dayOfWeek = now.getDay();
@@ -80,6 +84,15 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             <h1 className="text-2xl font-bold">Amana Kids</h1>
             <p className="text-blue-100 text-sm">Igreja Amana</p>
           </div>
+
+          <Button
+            onClick={() => {
+              logout({ onSuccess: () => navigate("/login") });
+            }}
+            variant="ghost"
+          >
+            Sair
+          </Button>
         </div>
 
         {/* Welcome Message */}
