@@ -5,6 +5,11 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      external: ["cloudflare:sockets"],
+    },
+  },
   plugins: [
     tailwindcss(),
     reactRouter(),
