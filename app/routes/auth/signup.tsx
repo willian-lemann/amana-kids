@@ -34,6 +34,7 @@ export default function SignUp() {
           navigate("/");
         },
         onError: (ctx) => {
+          setIsLoading(false);
           toast("Erro ao registrar conta", {
             description: ctx.error.message,
           });

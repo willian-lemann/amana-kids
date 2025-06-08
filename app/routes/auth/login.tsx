@@ -29,6 +29,7 @@ export default function SignIn() {
           navigate("/");
         },
         onError: (ctx) => {
+          setIsLoading(false);
           toast(JSON.stringify(ctx.error));
         },
       }
