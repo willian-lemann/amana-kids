@@ -1,9 +1,9 @@
-import type { Route } from "./+types/home";
 import { Welcome } from "../welcome/welcome";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { BookOpen, Calendar, Heart, HomeIcon, Star, Users } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
+import type { Route } from "./+types/home";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -13,17 +13,62 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+  function getNextSundayAt19() {
+    const now = new Date();
+    const dayOfWeek = now.getDay();
+    const daysUntilSunday = (7 - dayOfWeek) % 7;
+    const nextSunday = new Date(now);
+    nextSunday.setDate(now.getDate() + daysUntilSunday);
+    nextSunday.setHours(19, 0, 0, 0);
+
+    // Se hoje é domingo e ainda não deu 19:00, retorna hoje às 19:00
+    if (dayOfWeek === 0 && now < nextSunday) {
+      return nextSunday;
+    }
+    // Se já passou das 19:00 de hoje, pega o próximo domingo
+    if (dayOfWeek === 0 && now >= nextSunday) {
+      nextSunday.setDate(nextSunday.getDate() + 7);
+      return nextSunday;
+    }
+    return nextSunday;
+  }
+
+  const now = new Date();
+  const nextSundayAt19 = getNextSundayAt19();
+  const isTodaySunday = now.getDay() === 0;
+  const isCultoNow =
+    isTodaySunday &&
+    now.getHours() === 19 &&
+    now.getMinutes() >= 0 &&
+    now.getMinutes() < 60;
+
+  let cardTitle = "Próximo Culto";
+  let cardSubtitle = "";
+
+  if (isTodaySunday && now.getHours() < 19) {
+    cardTitle = "Culto Hoje";
+    cardSubtitle = "Hoje às 19:00";
+  } else if (isCultoNow) {
+    cardTitle = "Culto em andamento";
+    cardSubtitle = "";
+  } else {
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: "long",
+      day: "2-digit",
+      month: "2-digit",
+    };
+    cardSubtitle =
+      nextSundayAt19.toLocaleDateString("pt-BR", options) + " às 19:00";
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-b-3xl shadow-lg">
+      <div className="bg-gradient-to-r from-[#20b2fe] via-90% to-[#20b2fe] text-white p-4 rounded-b-3xl shadow-lg">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">Amana Kids</h1>
             <p className="text-blue-100 text-sm">Igreja Amana</p>
-          </div>
-          <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-            <Heart className="w-6 h-6 text-white" />
           </div>
         </div>
 
@@ -40,15 +85,15 @@ export default function Home() {
       <div className="p-4 space-y-4 pb-20">
         {/* Quick Actions */}
         <div className="grid grid-cols-2 gap-3">
-          <Card className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white border-0 shadow-lg">
+          <Card className="bg-gradient-to-br from-[#ff3d80] to-[#ff3d80] text-white border-0 shadow-lg">
             <CardContent className="p-4 text-center">
               <Calendar className="w-8 h-8 mx-auto mb-2" />
-              <p className="font-semibold text-sm">Próximo Evento</p>
-              <p className="text-xs opacity-90">Domingo 10h</p>
+              <p className="font-semibold text-sm">{cardTitle}</p>
+              <p className="text-xs opacity-90">{cardSubtitle}</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-400 to-emerald-500 text-white border-0 shadow-lg">
+          <Card className="bg-gradient-to-br from-[#c9e265] via-[#c9e265] via-90% to-[#c9e265] text-white border-0 shadow-lg">
             <CardContent className="p-4 text-center">
               <BookOpen className="w-8 h-8 mx-auto mb-2" />
               <p className="font-semibold text-sm">Lição de Hoje</p>
@@ -95,14 +140,14 @@ export default function Home() {
         </Card>
 
         {/* Bible Verse of the Day */}
-        <Card className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 shadow-lg">
+        <Card className="bg-gradient-to-r from-purple-500 to-[#ff3e7f] text-white border-0 shadow-lg">
           <CardContent className="p-4">
             <div className="flex items-start gap-3">
               <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
                 <BookOpen className="w-4 h-4" />
               </div>
               <div>
-                <p className="font-semibold text-sm mb-1">Versículo do Dia</p>
+                <p className="font-semibold text-sm mb-1">Versículo do Mês</p>
                 <p className="text-sm italic leading-relaxed">
                   "Porque Deus amou o mundo de tal maneira que deu o seu Filho
                   unigênito..."
@@ -159,17 +204,26 @@ export default function Home() {
             className="flex-col gap-1 h-auto py-2 text-gray-500"
           >
             <Calendar className="w-5 h-5" />
-            <span className="text-xs">Eventos</span>
+            <span className="text-xs">Chamada</span>
           </Button>
 
-          <Button
+          {/* <Button
+            variant="ghost"
+            size="sm"
+            className="flex-col gap-1 h-auto py-2 text-gray-500"
+          >
+            <Calendar className="w-5 h-5" />
+            <span className="text-xs">Eventos</span>
+          </Button> */}
+
+          {/* <Button
             variant="ghost"
             size="sm"
             className="flex-col gap-1 h-auto py-2 text-gray-500"
           >
             <BookOpen className="w-5 h-5" />
             <span className="text-xs">Lições</span>
-          </Button>
+          </Button> */}
 
           <Button
             variant="ghost"
