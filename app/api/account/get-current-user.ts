@@ -1,21 +1,18 @@
 import { auth } from "~/lib/auth";
 import { db } from "../database";
 import type { User } from "../types";
+import { middlewares } from "../middlewares";
 
-export async function getCurrentUser(request: Request) {
-  const session = await auth.api.getSession(request);
-
-  if (!session) {
-    return null;
-  }
+export async function getCurrentUser(request: Request, columns: string = "*") {
+  const userId = await middlewares.authenticated(request);
 
   const { data } = await db
     .from("user")
-    .select("*")
-    .eq("id", session.user.id)
+    .select(columns)
+    .eq("id", userId)
     .single();
 
-  return data as User;
+  return data as User | null;
 }
 
 export async function getUserId(request: Request): Promise<string | null> {

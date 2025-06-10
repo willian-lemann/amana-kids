@@ -33,9 +33,6 @@ import {
   AlertTriangle,
   Bell,
 } from "lucide-react";
-import type { Route } from "./+types/admin";
-import { getCurrentUser } from "~/api/account/get-current-user";
-import { redirect } from "react-router";
 
 // Interfaces
 interface Aviso {
@@ -79,14 +76,7 @@ interface Presenca {
   presente: boolean;
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const user = await getCurrentUser(request);
-  if (!Boolean(user?.is_admin)) {
-    return redirect("/");
-  }
-}
-
-export default function PainelAdministrativo({}: Route.ComponentProps) {
+export function AdminContent() {
   // Estados para Avisos
   const [avisos, setAvisos] = useState<Aviso[]>([
     {

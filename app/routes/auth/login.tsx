@@ -21,11 +21,10 @@ export default function SignIn() {
         password,
       },
       {
-        onRequest: (ctx) => {
+        onRequest: () => {
           setIsLoading(true);
         },
-        onSuccess: (ctx) => {
-          setIsLoading(false);
+        onSuccess: () => {
           navigate("/");
         },
         onError: (ctx) => {
@@ -39,13 +38,16 @@ export default function SignIn() {
   return (
     <div className="flex flex-1 items-center justify-center">
       <div className="w-full max-w-xs">
+        <div className="bg-[url(/logo.png)] bg-cover bg-center bg-transparent bg-no-repeat h-32 rounded-t-lg mb-6"></div>
+
         <Form onSubmit={signIn} className={cn("flex flex-col gap-6")}>
           <div className="flex flex-col items-center gap-2 text-center">
-            <h1 className="text-2xl font-bold">Login da sua conta</h1>
+            <h1 className="text-2xl font-bold">Login Amana kids</h1>
             <p className="text-balance text-sm text-muted-foreground">
-              Entre com seu email e senha para acessar sua conta.
+              Entre com seu email e senha para acessar sua conta
             </p>
           </div>
+
           <div className="grid gap-6">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>

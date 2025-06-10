@@ -25,7 +25,7 @@ export async function createChild(db: SupabaseClient, input: Child) {
 
 export async function getChildren(db: SupabaseClient) {
   const { data, error } = await db.from("child").select("*");
-  return { data, error };
+  return { data: data as Child[], error };
 }
 
 export async function getChild(db: SupabaseClient, id: string) {

@@ -1,10 +1,10 @@
 import { Outlet, redirect } from "react-router";
 
 import type { Route } from "./+types/guest";
-import { getCurrentUser } from "~/api/account/get-current-user";
+import { getUserId } from "~/api/account/get-current-user";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  const user = await getCurrentUser(request);
+  const user = await getUserId(request);
 
   if (user) {
     return redirect("/");

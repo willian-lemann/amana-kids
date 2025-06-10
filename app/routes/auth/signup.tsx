@@ -29,8 +29,7 @@ export default function SignUp() {
         onRequest: () => {
           setIsLoading(true);
         },
-        onSuccess: (ctx) => {
-          setIsLoading(false);
+        onSuccess: () => {
           navigate("/");
         },
         onError: (ctx) => {
@@ -52,7 +51,8 @@ export default function SignUp() {
               Registro da conta no Amana kids
             </h1>
             <p className="text-balance text-sm text-muted-foreground">
-              Crie sua conta para acessar o Amana kids.
+              Crie sua conta para acessar o Amana kids, e depois preencher os
+              dados do(s) seu(s) filho(s).
             </p>
           </div>
           <div className="grid gap-6">
